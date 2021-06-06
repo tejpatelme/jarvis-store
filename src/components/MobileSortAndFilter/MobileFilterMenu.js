@@ -25,7 +25,7 @@ export default function MobileFilterMenu({ setMobileFilterMenuOpen }) {
           <input
             checked={showOnlyInStock}
             type="checkbox"
-            onChange={() => dispatch({ TYPE: "SHOW_ONLY_IN_STOCK" })}
+            onChange={() => dispatch({ type: "SHOW_ONLY_IN_STOCK" })}
           />
           Exclude out of stock
         </label>
@@ -34,7 +34,7 @@ export default function MobileFilterMenu({ setMobileFilterMenuOpen }) {
           <input
             checked={showOnlyFastDelivery}
             type="checkbox"
-            onChange={() => dispatch({ TYPE: "SHOW_ONLY_FAST_DELIVERY" })}
+            onChange={() => dispatch({ type: "SHOW_ONLY_FAST_DELIVERY" })}
           />
           Show fast delivery only
         </label>

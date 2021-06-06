@@ -20,7 +20,7 @@ export default function Cart() {
   //       } = await axios.get("http://localhost:3000/cart");
   //       console.log(products);
   //       if (status === 200) {
-  //         dispatch({ TYPE: "SET_CART", PAYLOAD: products });
+  //         dispatch({ type: "SET_CART", payload: products });
   //       }
   //     })(),
   //   [dispatch]
@@ -28,17 +28,15 @@ export default function Cart() {
 
   const removeProduct = async (id) => {
     try {
-      const {
-        status,
-      } = await axios.post(
+      const { status } = await axios.post(
         `https://api-jarvis-store.herokuapp.com/cart/remove-product/${user.cartId}`,
         { productId: id }
       );
       if (status === 200) {
-        dispatch({ TYPE: "REMOVE_FROM_CART", PAYLOAD: { id } });
+        dispatch({ type: "REMOVE_FROM_CART", payload: { id } });
         toastDispatch({
-          TYPE: "ERROR",
-          PAYLOAD: { message: "Removed product from cart" },
+          type: "ERROR",
+          payload: { message: "Removed product from cart" },
         });
       }
     } catch (err) {
@@ -48,16 +46,14 @@ export default function Cart() {
 
   const decreaseQuantity = async (id) => {
     try {
-      const {
-        status,
-      } = await axios.post(
+      const { status } = await axios.post(
         `https://api-jarvis-store.herokuapp.com/cart/decrease-product-quantity/${user.cartId}`,
         { productId: id }
       );
       if (status === 200) {
         dispatch({
-          TYPE: "DECREASE_QUANTITY",
-          PAYLOAD: { id },
+          type: "DECREASE_QUANTITY",
+          payload: { id },
         });
       }
     } catch (err) {
@@ -67,16 +63,14 @@ export default function Cart() {
 
   const increaseQuantity = async (id) => {
     try {
-      const {
-        status,
-      } = await axios.post(
+      const { status } = await axios.post(
         `https://api-jarvis-store.herokuapp.com/cart/increase-product-quantity/${user.cartId}`,
         { productId: id }
       );
       if (status === 200) {
         dispatch({
-          TYPE: "INCREASE_QUANTITY",
-          PAYLOAD: { id },
+          type: "INCREASE_QUANTITY",
+          payload: { id },
         });
       }
     } catch (err) {

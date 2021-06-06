@@ -4,16 +4,16 @@ const UserDataContext = createContext();
 
 function reducerFunc(prevState, action) {
   const { cart, wishlist } = prevState;
-  const { id } = action.PAYLOAD;
+  const { id } = action.payload;
 
-  switch (action.TYPE) {
+  switch (action.type) {
     case "SET_CART": {
-      const tempCart = [...action.PAYLOAD];
+      const tempCart = [...action.payload];
       return { cart: tempCart, wishlist };
     }
 
     case "SET_WISHLIST": {
-      const tempWishlist = [...action.PAYLOAD];
+      const tempWishlist = [...action.payload];
       return { cart, wishlist: tempWishlist };
     }
     case "ADD_TO_CART": {
@@ -24,7 +24,7 @@ function reducerFunc(prevState, action) {
         );
         return { cart: newArr, wishlist };
       }
-      const newArr = cart.concat({ ...action.PAYLOAD, quantity: 1 });
+      const newArr = cart.concat({ ...action.payload, quantity: 1 });
       return { cart: newArr, wishlist };
     }
 
@@ -48,12 +48,12 @@ function reducerFunc(prevState, action) {
     }
 
     case "ADD_TO_WISHLIST": {
-      const newArr = wishlist.concat(action.PAYLOAD);
+      const newArr = wishlist.concat(action.payload);
       return { cart, wishlist: newArr };
     }
 
     case "REMOVE_FROM_WISHLIST": {
-      const newArr = wishlist.filter((prod) => prod._id !== action.PAYLOAD);
+      const newArr = wishlist.filter((prod) => prod._id !== action.payload);
       return { cart, wishlist: newArr };
     }
     default:

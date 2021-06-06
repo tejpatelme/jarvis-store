@@ -61,7 +61,7 @@ export default function Products() {
             type="radio"
             name="sort"
             onChange={() =>
-              dispatch({ TYPE: "SORT_BY", PAYLOAD: "HIGH_TO_LOW" })
+              dispatch({ TYPE: "SORT_BY", payload: "HIGH_TO_LOW" })
             }
           />{" "}
           High To Low
@@ -72,7 +72,7 @@ export default function Products() {
             type="radio"
             name="sort"
             onChange={() =>
-              dispatch({ TYPE: "SORT_BY", PAYLOAD: "LOW_TO_HIGH" })
+              dispatch({ TYPE: "SORT_BY", payload: "LOW_TO_HIGH" })
             }
           />{" "}
           Low To High

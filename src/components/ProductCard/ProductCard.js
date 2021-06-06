@@ -26,23 +26,21 @@ export default function ProductCard({ details }) {
     if (match) {
       try {
         toastDispatch({
-          TYPE: "INFO",
-          PAYLOAD: {
+          type: "INFO",
+          payload: {
             message: "Removing Item from wishlist",
             autoCloseInterval: 1000,
           },
         });
-        const {
-          data: updateWishlist,
-        } = await axios.delete(
+        const { data: updateWishlist } = await axios.delete(
           `https://api-jarvis-store.herokuapp.com/wishlist/${user.wishlistId}`,
           { data: { productId: id } }
         );
         console.log(updateWishlist);
-        dispatch({ TYPE: "REMOVE_FROM_WISHLIST", PAYLOAD: id });
+        dispatch({ type: "REMOVE_FROM_WISHLIST", payload: id });
         toastDispatch({
-          TYPE: "ERROR",
-          PAYLOAD: { message: "Removed item from Wishlist" },
+          type: "ERROR",
+          payload: { message: "Removed item from Wishlist" },
         });
       } catch (err) {
         console.log(err.response);
@@ -51,17 +49,17 @@ export default function ProductCard({ details }) {
     }
     try {
       toastDispatch({
-        TYPE: "INFO",
-        PAYLOAD: { message: "Adding to wishlist", autoCloseInterval: 1000 },
+        type: "INFO",
+        payload: { message: "Adding to wishlist", autoCloseInterval: 1000 },
       });
       await axios.post(
         `https://api-jarvis-store.herokuapp.com/wishlist/${user.wishlistId}`,
         { productId: id }
       );
-      dispatch({ TYPE: "ADD_TO_WISHLIST", PAYLOAD: details });
+      dispatch({ type: "ADD_TO_WISHLIST", payload: details });
       toastDispatch({
-        TYPE: "SUCCESS",
-        PAYLOAD: { message: "Added item to Wishlist" },
+        type: "SUCCESS",
+        payload: { message: "Added item to Wishlist" },
       });
     } catch (err) {
       console.log(err.response);
@@ -89,10 +87,10 @@ export default function ProductCard({ details }) {
       );
 
       if (status === 200) {
-        dispatch({ TYPE: "SET_CART", PAYLOAD: products });
+        dispatch({ type: "SET_CART", payload: products });
         toastDispatch({
-          TYPE: "SUCCESS",
-          PAYLOAD: { message: "Added to cart" },
+          type: "SUCCESS",
+          payload: { message: "Added to cart" },
         });
       }
     } catch (err) {

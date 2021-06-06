@@ -3,7 +3,7 @@ import { useReducer, useContext, createContext } from "react";
 const ProductContext = createContext();
 
 function reducerFunc(prevState, action) {
-  switch (action.TYPE) {
+  switch (action.type) {
     case "SHOW_ONLY_IN_STOCK": {
       return {
         ...prevState,
@@ -21,7 +21,7 @@ function reducerFunc(prevState, action) {
     case "SORT_BY": {
       return {
         ...prevState,
-        sortBy: action.PAYLOAD,
+        sortBy: action.payload,
       };
     }
     default:

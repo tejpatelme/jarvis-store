@@ -13,14 +13,12 @@ export default function Wishlist() {
 
   const removeFromWishlist = async (id) => {
     try {
-      const {
-        status,
-      } = await axios.delete(
+      const { status } = await axios.delete(
         `https://api-jarvis-store.herokuapp.com/wishlist/${user.wishlistId}`,
         { data: { productId: id } }
       );
       if (status === 200) {
-        dispatch({ TYPE: "REMOVE_FROM_WISHLIST", PAYLOAD: id });
+        dispatch({ type: "REMOVE_FROM_WISHLIST", payload: id });
       }
     } catch (err) {
       console.log(err.response);
@@ -41,10 +39,10 @@ export default function Wishlist() {
         }
       );
       if (status === 200) {
-        dispatch({ TYPE: "SET_CART", PAYLOAD: products });
+        dispatch({ type: "SET_CART", payload: products });
         toastDispatch({
-          TYPE: "INFO",
-          PAYLOAD: {
+          type: "INFO",
+          payload: {
             message: "Item moved to cart",
             autoCloseInterval: 3000,
           },
@@ -55,7 +53,7 @@ export default function Wishlist() {
         `https://api-jarvis-store.herokuapp.com/wishlist/${user.wishlistId}`,
         { data: { productId: id } }
       );
-      dispatch({ TYPE: "REMOVE_FROM_WISHLIST", PAYLOAD: id });
+      dispatch({ type: "REMOVE_FROM_WISHLIST", payload: id });
     } catch (err) {
       console.log(err.response);
     }

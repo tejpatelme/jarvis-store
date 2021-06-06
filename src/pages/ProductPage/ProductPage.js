@@ -33,10 +33,10 @@ export default function ProductPage() {
       );
 
       if (status === 200) {
-        dispatch({ TYPE: "SET_CART", PAYLOAD: products });
+        dispatch({ type: "SET_CART", payload: products });
         toastDispatch({
-          TYPE: "SUCCESS",
-          PAYLOAD: { message: "Added to cart" },
+          type: "SUCCESS",
+          payload: { message: "Added to cart" },
         });
       }
     } catch (err) {
