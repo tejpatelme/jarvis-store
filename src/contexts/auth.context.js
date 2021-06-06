@@ -1,80 +1,70 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
+import useAxios from "../hooks/useAxios";
+import API from "../services/api/api-urls";
+import { useToast } from "./";
 import axios from "axios";
 
 const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  useEffect(() => {
-    setIsLoggedIn(JSON.parse(localStorage.getItem("user")) ? true : false);
-    setUser(JSON.parse(localStorage.getItem("user")));
-  }, []);
+  const { token: userToken } = JSON.parse(localStorage.getItem("login")) || {
+    token: null,
+  };
+
+  const [userLogin, setUserLogin] = useState({
+    isLoggedIn: userToken ? true : false,
+    token: userToken,
+  });
+  const { postData: signUpUser } = useAxios(API.SIGN_UP);
+  const { postData: logInUser } = useAxios(API.LOGIN);
+  const { dispatch } = useToast();
+
+  const setupHeaderForServiceCalls = () => {
+    if (userLogin.isLoggedIn && userLogin.token) {
+      return (axios.defaults.headers.common["Authorization"] = userLogin.token);
+    }
+
+    delete axios.defaults.headers.common["Authorization"];
+  };
+
+  setupHeaderForServiceCalls();
 
   const signUp = async (email, password) => {
-    try {
-      const {
-        data: { _id: cartId },
-      } = await axios.post("https://api-jarvis-store.herokuapp.com/cart");
-      const {
-        data: { _id: wishlistId },
-      } = await axios.post("https://api-jarvis-store.herokuapp.com/wishlist");
-      const { data, status } = await axios.post(
-        "https://api-jarvis-store.herokuapp.com/user/signup",
-        {
-          email,
-          password,
-          cartId,
-          wishlistId,
-        }
-      );
-      console.log(data, status);
-      if (status === 200) {
-        localStorage.setItem("user", JSON.stringify(data));
-        setUser(data);
-        setIsLoggedIn(true);
-        return status;
-      }
-    } catch (err) {
-      console.log(err.response);
+    const data = await signUpUser({ email, password });
+
+    if (data?.success) {
+      dispatch({
+        type: "SUCCESS",
+        payload: { message: "Sign up successful, please login to continue" },
+      });
     }
+
+    return data?.success;
   };
 
   const login = async (email, password) => {
-    try {
-      const {
-        data: { user },
-        status,
-      } = await axios.post(
-        "https://api-jarvis-store.herokuapp.com/user/login",
-        {
-          email,
-          password,
-        }
-      );
-      if (status === 200) {
-        localStorage.setItem("user", JSON.stringify(user));
-        setUser(user);
-        setIsLoggedIn(true);
-        return { user, status };
-      }
-    } catch (err) {
-      const {
-        data: { errorMessage },
-        status,
-      } = err.response;
-      return { errorMessage, status };
+    const data = await logInUser({ email, password });
+
+    if (data?.success) {
+      setUserLogin({ isLoggedIn: true, token: data.token });
+      localStorage.setItem("login", JSON.stringify({ token: data.token }));
+
+      dispatch({
+        type: "SUCCESS",
+        payload: { message: "Login Successful" },
+      });
     }
+
+    return data?.success;
   };
 
   const logout = () => {
-    localStorage.removeItem("user");
-    setIsLoggedIn(false);
-    setUser(null);
+    localStorage.removeItem("login");
+    setUserLogin({ isLoggedIn: false, token: null });
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoggedIn, signUp }}>
+    <AuthContext.Provider value={{ userLogin, login, logout, signUp }}>
       {children}
     </AuthContext.Provider>
   );
