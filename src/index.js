@@ -12,19 +12,19 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
-    <AuthProvider>
-      <GetProductsProvider>
-        <ProductProvider>
-          <UserDataProvider>
-            <ToastProvider>
+    <ToastProvider>
+      <AuthProvider>
+        <GetProductsProvider>
+          <ProductProvider>
+            <UserDataProvider>
               <Router>
                 <App />
               </Router>
-            </ToastProvider>
-          </UserDataProvider>
-        </ProductProvider>
-      </GetProductsProvider>
-    </AuthProvider>
+            </UserDataProvider>
+          </ProductProvider>
+        </GetProductsProvider>
+      </AuthProvider>
+    </ToastProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
