@@ -9,7 +9,7 @@ export default function Toast({ toast }) {
   useEffect(() => {
     const { id, autoCloseInterval } = toast;
     const handle = setTimeout(
-      () => dispatch({ TYPE: "DELETE", PAYLOAD: id }),
+      () => dispatch({ type: "DELETE", payload: id }),
       autoCloseInterval ? autoCloseInterval : 4000
     );
     return () => clearTimeout(handle);
