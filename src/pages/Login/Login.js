@@ -18,14 +18,13 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { status, errorMessage } = await login(email, password);
+    const success = await login(email, password);
 
-    if (status === 200) {
+    if (success) {
       setLoginStatus("success");
       setErrorMessage("");
       navigate(state?.from ? state.from : "/");
-    }
-    if (status === 401) {
+    } else {
       setLoginStatus("failed");
       setErrorMessage(errorMessage);
     }

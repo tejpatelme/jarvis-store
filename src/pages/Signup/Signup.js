@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuth, useToast } from "../../contexts";
+import { useAuth } from "../../contexts";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function Signup() {
@@ -13,8 +13,6 @@ export default function Signup() {
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  const { dispatch: toastDispatch } = useToast();
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => isLoggedIn && navigate("/"), [isLoggedIn]);
 
@@ -27,14 +25,9 @@ export default function Signup() {
     }
 
     if (password === confirmPassword) {
-      const status = await signUp(email, password);
-      if (status === 200) {
-        toastDispatch({
-          TYPE: "SUCCESS",
-          PAYLOAD: { message: "Signup successful!" },
-        });
-        navigate(state?.from ? state.from : "/");
-      }
+      const success = await signUp(email, password);
+
+      success && navigate(state?.from ? state.from : "/");
     }
   };
   return (
