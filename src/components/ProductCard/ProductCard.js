@@ -1,107 +1,70 @@
-import { useState } from "react";
-import axios from "axios";
 import { useAuth, useUserData, useToast } from "../../contexts";
 import { useNavigate } from "react-router-dom";
+import useAxios from "../../hooks/useAxios";
+import API from "../../services/api/api-urls";
 
 export default function ProductCard({ details }) {
   const {
-    state: { wishlist },
+    state: { cart, wishlist },
     dispatch,
   } = useUserData();
-  const { user, isLoggedIn } = useAuth();
-  const { _id: id, brand, name, price, image, fastDelivery, inStock } = details;
+  const {
+    userLogin: { isLoggedIn },
+  } = useAuth();
+  const { _id, brand, name, price, image, fastDelivery, inStock } = details;
   const { dispatch: toastDispatch } = useToast();
-  const [loading, setLoading] = useState(false);
-
+  const { postData: addToCart, loading } = useAxios(API.ADD_TO_CART);
+  const { postData: addToWishlist } = useAxios(API.GET_WISHLIST);
   const navigate = useNavigate();
 
   const handleWishlist = async (e) => {
     e.stopPropagation();
     if (isLoggedIn === false) {
-      navigate("/login");
-      return;
+      return navigate("/login");
     }
 
-    const match = wishlist.find((prod) => prod._id === id);
-    if (match) {
-      try {
-        toastDispatch({
-          type: "INFO",
-          payload: {
-            message: "Removing Item from wishlist",
-            autoCloseInterval: 1000,
-          },
-        });
-        const { data: updateWishlist } = await axios.delete(
-          `https://api-jarvis-store.herokuapp.com/wishlist/${user.wishlistId}`,
-          { data: { productId: id } }
-        );
-        console.log(updateWishlist);
-        dispatch({ type: "REMOVE_FROM_WISHLIST", payload: id });
-        toastDispatch({
-          type: "ERROR",
-          payload: { message: "Removed item from Wishlist" },
-        });
-      } catch (err) {
-        console.log(err.response);
-      }
-      return;
-    }
-    try {
-      toastDispatch({
-        type: "INFO",
-        payload: { message: "Adding to wishlist", autoCloseInterval: 1000 },
-      });
-      await axios.post(
-        `https://api-jarvis-store.herokuapp.com/wishlist/${user.wishlistId}`,
-        { productId: id }
-      );
-      dispatch({ type: "ADD_TO_WISHLIST", payload: details });
+    const data = await addToWishlist({ productId: _id });
+
+    if (data?.success) {
+      dispatch({ type: "HANDLE_WISHLIST", payload: { product: details } });
+
       toastDispatch({
         type: "SUCCESS",
-        payload: { message: "Added item to Wishlist" },
+        payload: { message: "Added to wishlist" },
       });
-    } catch (err) {
-      console.log(err.response);
     }
   };
 
   const handleAddToCart = async (e) => {
     e.stopPropagation();
     if (isLoggedIn === false) {
-      navigate("/login");
-      return;
+      return navigate("/login");
     }
-    try {
-      setLoading(true);
-      const {
-        data: {
-          updatedCart: { products },
-        },
-        status,
-      } = await axios.post(
-        `https://api-jarvis-store.herokuapp.com/cart/${user.cartId}`,
-        {
-          productId: id,
-        }
-      );
 
-      if (status === 200) {
-        dispatch({ type: "SET_CART", payload: products });
-        toastDispatch({
-          type: "SUCCESS",
-          payload: { message: "Added to cart" },
-        });
-      }
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
+    if (e.target.innerText === "Go To Cart") {
+      return navigate("/cart");
+    }
+
+    const data = await addToCart({ productId: _id });
+
+    if (data?.success) {
+      dispatch({ type: "ADD_TO_CART", payload: { product: details } });
+
+      toastDispatch({
+        type: "SUCCESS",
+        payload: { message: "Added to cart" },
+      });
     }
   };
 
   const navigateToDescription = () => {
-    navigate(`${id}`);
+    navigate(`/products/${_id}`);
+  };
+
+  const generateButtonText = () => {
+    return cart.find((product) => product._id === _id)
+      ? "Go To Cart"
+      : "Add to cart";
   };
 
   return (
@@ -131,12 +94,12 @@ export default function ProductCard({ details }) {
           {loading ? (
             <i className="fas fa-circle-notch fa-pulse mr-2"></i>
           ) : (
-            "Add to cart"
+            generateButtonText()
           )}
         </button>
       </div>
       <button className="card-button" onClick={handleWishlist}>
-        {wishlist.find((prod) => prod._id === id) ? (
+        {wishlist.find((prod) => prod._id === _id) ? (
           <svg width="1.25rem" height="1.25rem" viewBox="0 0 24 24">
             <path
               d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.27 2 8.5C2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.53L12 21.35z"
