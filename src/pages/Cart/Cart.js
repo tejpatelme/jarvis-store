@@ -1,89 +1,70 @@
 import "./Cart.css";
-import { useAuth, useToast, useUserData } from "../../contexts";
-import axios from "axios";
-// import { useEffect } from "react";
+import { useToast, useUserData } from "../../contexts";
+import useAxios from "../../hooks/useAxios";
+import API from "../../services/api/api-urls";
 
 export default function Cart() {
   const {
     state: { cart },
     dispatch,
   } = useUserData();
-  const { user } = useAuth();
   const { dispatch: toastDispatch } = useToast();
+  const { postData: removeFromCart } = useAxios(API.REMOVE_PRODUCT);
+  const { postData: DecreaseQuantity } = useAxios(
+    API.DECREASE_PRODUCT_QUANTITY
+  );
+  const { postData: IncreaseQuantity } = useAxios(
+    API.INCREASE_PRODUCT_QUANTITY
+  );
 
-  // useEffect(
-  //   () =>
-  //     (async () => {
-  //       const {
-  //         data: { products },
-  //         status,
-  //       } = await axios.get("http://localhost:3000/cart");
-  //       console.log(products);
-  //       if (status === 200) {
-  //         dispatch({ type: "SET_CART", payload: products });
-  //       }
-  //     })(),
-  //   [dispatch]
-  // );
+  const handleRemoveFromCart = async (id) => {
+    const data = await removeFromCart({ productId: id });
 
-  const removeProduct = async (id) => {
-    try {
-      const { status } = await axios.post(
-        `https://api-jarvis-store.herokuapp.com/cart/remove-product/${user.cartId}`,
-        { productId: id }
-      );
-      if (status === 200) {
-        dispatch({ type: "REMOVE_FROM_CART", payload: { id } });
-        toastDispatch({
-          type: "ERROR",
-          payload: { message: "Removed product from cart" },
-        });
-      }
-    } catch (err) {
-      console.log(err.response);
+    if (data?.success) {
+      dispatch({
+        type: "REMOVE_FROM_CART",
+        payload: {
+          product: { _id: id },
+        },
+      });
+
+      toastDispatch({
+        type: "INFO",
+        payload: { message: "Removed from cart" },
+      });
     }
   };
 
-  const decreaseQuantity = async (id) => {
-    try {
-      const { status } = await axios.post(
-        `https://api-jarvis-store.herokuapp.com/cart/decrease-product-quantity/${user.cartId}`,
-        { productId: id }
-      );
-      if (status === 200) {
-        dispatch({
-          type: "DECREASE_QUANTITY",
-          payload: { id },
-        });
-      }
-    } catch (err) {
-      console.log(err.response);
+  const handleDecreaseQuantity = async (id) => {
+    const data = await DecreaseQuantity({ productId: id });
+
+    if (data?.success) {
+      dispatch({
+        type: "DECREASE_QUANTITY",
+        payload: { product: { _id: id } },
+      });
     }
   };
 
-  const increaseQuantity = async (id) => {
-    try {
-      const { status } = await axios.post(
-        `https://api-jarvis-store.herokuapp.com/cart/increase-product-quantity/${user.cartId}`,
-        { productId: id }
-      );
-      if (status === 200) {
-        dispatch({
-          type: "INCREASE_QUANTITY",
-          payload: { id },
-        });
-      }
-    } catch (err) {
-      console.log(err.response);
+  const handleIncreaseQuantity = async (id) => {
+    const data = await IncreaseQuantity({
+      productId: id,
+    });
+
+    if (data?.success) {
+      dispatch({
+        type: "INCREASE_QUANTITY",
+        payload: { product: { _id: id } },
+      });
     }
   };
 
   return (
     <div className="cart-container">
       <h3 className="mb-3">Cart {cart.length} Items</h3>
-      {cart.map((prod) => {
-        const { _id, name, brand, price, image } = prod.productId;
-        const { qty } = prod;
+      {cart.map((product) => {
+        const { _id, name, brand, price, image, qty } = product;
+
         return (
           <div key={_id} className="cart-items-container">
             <div className="cart-card flex shadow-sm">
@@ -99,7 +80,7 @@ export default function Cart() {
                 <div className="cart-item-operations">
                   <button
                     className="btn-cart"
-                    onClick={() => decreaseQuantity(_id)}
+                    onClick={() => handleDecreaseQuantity(_id)}
                     disabled={qty === 1 ? true : false}
                   >
                     –
@@ -107,13 +88,13 @@ export default function Cart() {
                   <span className="text-bold">{qty}</span>
                   <button
                     className="btn-cart"
-                    onClick={() => increaseQuantity(_id)}
+                    onClick={() => handleIncreaseQuantity(_id)}
                   >
                     +
                   </button>
                   <button
                     className="btn-cart btn-cart-delete"
-                    onClick={() => removeProduct(_id)}
+                    onClick={() => handleRemoveFromCart(_id)}
                   >
                     <svg width="1.25rem" height="1.25rem" viewBox="0 0 24 24">
                       <path d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12z"></path>

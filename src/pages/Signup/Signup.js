@@ -48,7 +48,7 @@ export default function Signup() {
             value={password}
             type="password"
             className="input"
-            placeholder="*******"
+            placeholder="•••••••"
             onChange={(e) => setPassword(e.target.value)}
           />
           <div className="form-subtitle">Confirm Password</div>
@@ -56,7 +56,7 @@ export default function Signup() {
             value={confirmPassword}
             type="password"
             className="input"
-            placeholder="*******"
+            placeholder="•••••••"
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
           {signUpStatus === "failed" && (

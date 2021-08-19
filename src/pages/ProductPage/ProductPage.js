@@ -14,36 +14,35 @@ export default function ProductPage() {
   const [loading, setLoading] = useState(false);
 
   const handleAddToCart = async () => {
-    if (isLoggedIn === false) {
-      navigate("/login");
-      return;
-    }
-    try {
-      setLoading(true);
-      const {
-        data: {
-          updatedCart: { products },
-        },
-        status,
-      } = await axios.post(
-        `https://api-jarvis-store.herokuapp.com/cart/${user.cartId}`,
-        {
-          productId: id,
-        }
-      );
-
-      if (status === 200) {
-        dispatch({ type: "SET_CART", payload: products });
-        toastDispatch({
-          type: "SUCCESS",
-          payload: { message: "Added to cart" },
-        });
-      }
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
+    // if (isLoggedIn === false) {
+    //   navigate("/login");
+    //   return;
+    // }
+    // try {
+    //   setLoading(true);
+    //   const {
+    //     data: {
+    //       updatedCart: { products },
+    //     },
+    //     status,
+    //   } = await axios.post(
+    //     `https://api-jarvis-store.herokuapp.com/cart/${user.cartId}`,
+    //     {
+    //       productId: id,
+    //     }
+    //   );
+    //   if (status === 200) {
+    //     dispatch({ type: "SET_CART", payload: products });
+    //     toastDispatch({
+    //       type: "SUCCESS",
+    //       payload: { message: "Added to cart" },
+    //     });
+    //   }
+    // } catch (err) {
+    //   console.log(err);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
   const match = products.find((product) => product._id === id);
   const { image, brand, name, price, fastDelivery } = match;

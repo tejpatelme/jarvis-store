@@ -1,7 +1,8 @@
 import { useAuth, useUserData } from "../../contexts";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import axios from "axios";
+import useAxios from "../../hooks/useAxios";
+import API from "../../services/api/api-urls";
 
 export default function NavBar() {
   const {
@@ -9,47 +10,44 @@ export default function NavBar() {
     dispatch,
   } = useUserData();
 
-  const { isLoggedIn, logout } = useAuth();
+  const {
+    userLogin: { isLoggedIn },
+    logout,
+  } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    (async () => {
-      if (user) {
-        try {
-          const {
-            data: { products },
-          } = await axios.get(
-            `https://api-jarvis-store.herokuapp.com/cart/${user.cartId}`
-          );
-
-          const {
-            data: { products: wishlist },
-          } = await axios.get(
-            `https://api-jarvis-store.herokuapp.com/wishlist/${user.wishlistId}`
-          );
-          dispatch({ TYPE: "SET_CART", PAYLOAD: products });
-          dispatch({ TYPE: "SET_WISHLIST", PAYLOAD: wishlist });
-        } catch (err) {
-          console.log(err.message);
-        }
-      } else {
-        dispatch({ TYPE: "SET_CART", PAYLOAD: [] });
-        dispatch({ TYPE: "SET_WISHLIST", PAYLOAD: [] });
-      }
-    })();
-  }, [dispatch, isLoggedIn]);
+  const { getData: getUsersCart } = useAxios(API.GET_CART);
+  const { getData: getUsersWishlist } = useAxios(API.GET_WISHLIST);
 
   const handleClick = (e) => {
     return isLoggedIn ? logout() : navigate("/login");
   };
-  // const { products } = useGetProducts();
 
-  // const handleSearch = (e) => {
-  //   console.log(
-  //     products.filter((prod) => prod.name.toLowerCase() === e.target.value)
-  //   );
-  // };
+  useEffect(() => {
+    (async () => {
+      if (isLoggedIn) {
+        const cartData = await getUsersCart();
+        const wishlistData = await getUsersWishlist();
+
+        cartData?.cart?.products &&
+          dispatch({
+            type: "SET_CART",
+            payload: { products: cartData?.cart?.products },
+          });
+
+        wishlistData?.cart?.products &&
+          dispatch({
+            type: "SET_WISHLIST",
+            payload: {
+              products: wishlistData?.wishlist?.products,
+            },
+          });
+      } else {
+        dispatch({ type: "SET_CART", payload: { products: [] } });
+        dispatch({ type: "SET_WISHLIST", payload: { products: [] } });
+      }
+    })();
+  }, [isLoggedIn]);
 
   return (
     <header className="top-navigation">

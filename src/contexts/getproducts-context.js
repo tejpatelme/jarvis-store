@@ -12,7 +12,7 @@ export default function GetProductsProvider({ children }) {
     (async () => {
       const data = await getData();
 
-      setProducts(data.products);
+      setProducts(data?.products);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

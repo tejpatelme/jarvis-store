@@ -4,58 +4,77 @@ const UserDataContext = createContext();
 
 function reducerFunc(prevState, action) {
   const { cart, wishlist } = prevState;
-  const { id } = action.payload;
+  // const { id } = action.payload;
 
   switch (action.type) {
     case "SET_CART": {
-      const tempCart = [...action.payload];
-      return { cart: tempCart, wishlist };
+      const products = action.payload.products.map((product) => ({
+        ...product.productId,
+        qty: product.qty,
+      }));
+
+      return { cart: products, wishlist };
     }
 
     case "SET_WISHLIST": {
-      const tempWishlist = [...action.payload];
+      const tempWishlist = [...action.payload.products];
       return { cart, wishlist: tempWishlist };
     }
+
     case "ADD_TO_CART": {
-      const match = cart.find((prod) => prod.id === id);
-      if (match) {
-        const newArr = cart.map((prod) =>
-          prod.id === id ? { ...prod, quantity: prod.quantity + 1 } : prod
-        );
-        return { cart: newArr, wishlist };
-      }
-      const newArr = cart.concat({ ...action.payload, quantity: 1 });
+      const newArr = cart.concat({ ...action.payload.product, qty: 1 });
+
       return { cart: newArr, wishlist };
     }
 
-    case "INCREASE_QUANTITY": {
-      const newArr = cart.map((prod) =>
-        prod.productId._id === id ? { ...prod, qty: prod.qty + 1 } : prod
+    case "HANDLE_WISHLIST": {
+      const match = wishlist.find(
+        (product) => product._id === action.payload.product._id
       );
+
+      const newArr = match
+        ? wishlist.filter(
+            (product) => product._id !== action.payload.product._id
+          )
+        : wishlist.concat(action.payload.product);
+
+      return { cart, wishlist: newArr };
+    }
+
+    case "INCREASE_QUANTITY": {
+      const newArr = cart.map((product) => {
+        return product._id === action.payload.product._id
+          ? {
+              ...product,
+              qty: product.qty + 1,
+            }
+          : product;
+      });
+
       return { cart: newArr, wishlist };
     }
 
     case "DECREASE_QUANTITY": {
-      const newArr = cart.map((prod) =>
-        prod.productId._id === id ? { ...prod, qty: prod.qty - 1 } : prod
-      );
+      const newArr = cart.map((product) => {
+        return product._id === action.payload.product._id
+          ? {
+              ...product,
+              qty: product.qty - 1,
+            }
+          : product;
+      });
+
       return { cart: newArr, wishlist };
     }
 
     case "REMOVE_FROM_CART": {
-      const newArr = cart.filter((prod) => prod.productId._id !== id);
+      const newArr = cart.filter(
+        (product) => product._id !== action.payload.product._id
+      );
+
       return { cart: newArr, wishlist };
     }
 
-    case "ADD_TO_WISHLIST": {
-      const newArr = wishlist.concat(action.payload);
-      return { cart, wishlist: newArr };
-    }
-
-    case "REMOVE_FROM_WISHLIST": {
-      const newArr = wishlist.filter((prod) => prod._id !== action.payload);
-      return { cart, wishlist: newArr };
-    }
     default:
       return prevState;
   }

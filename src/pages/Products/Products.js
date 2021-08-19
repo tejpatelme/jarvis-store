@@ -61,7 +61,7 @@ export default function Products() {
             type="radio"
             name="sort"
             onChange={() =>
-              dispatch({ TYPE: "SORT_BY", payload: "HIGH_TO_LOW" })
+              dispatch({ type: "SORT_BY", payload: "HIGH_TO_LOW" })
             }
           />{" "}
           High To Low
@@ -72,7 +72,7 @@ export default function Products() {
             type="radio"
             name="sort"
             onChange={() =>
-              dispatch({ TYPE: "SORT_BY", payload: "LOW_TO_HIGH" })
+              dispatch({ type: "SORT_BY", payload: "LOW_TO_HIGH" })
             }
           />{" "}
           Low To High
@@ -83,7 +83,7 @@ export default function Products() {
           <input
             checked={showOnlyInStock}
             type="checkbox"
-            onChange={() => dispatch({ TYPE: "SHOW_ONLY_IN_STOCK" })}
+            onChange={() => dispatch({ type: "SHOW_ONLY_IN_STOCK" })}
           />
           Exclude out of stock
         </label>
@@ -92,7 +92,7 @@ export default function Products() {
           <input
             checked={showOnlyFastDelivery}
             type="checkbox"
-            onChange={() => dispatch({ TYPE: "SHOW_ONLY_FAST_DELIVERY" })}
+            onChange={() => dispatch({ type: "SHOW_ONLY_FAST_DELIVERY" })}
           />
           Show fast delivery only
         </label>
