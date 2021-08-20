@@ -35,7 +35,7 @@ export default function NavBar() {
             payload: { products: cartData?.cart?.products },
           });
 
-        wishlistData?.cart?.products &&
+        wishlistData?.wishlist?.products &&
           dispatch({
             type: "SET_WISHLIST",
             payload: {
