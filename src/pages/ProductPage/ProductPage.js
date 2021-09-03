@@ -2,7 +2,6 @@ import "./ProductPage.css";
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useGetProducts, useAuth, useToast, useUserData } from "../../contexts";
-import axios from "axios";
 
 export default function ProductPage() {
   const { id } = useParams();
