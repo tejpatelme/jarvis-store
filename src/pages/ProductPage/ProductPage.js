@@ -1,66 +1,138 @@
 import "./ProductPage.css";
-import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useGetProducts, useAuth, useToast, useUserData } from "../../contexts";
+import useAxios from "../../hooks/useAxios";
+import API from "../../services/api/api-urls";
+import { ProductsContainer, Spinner } from "../../components";
 
 export default function ProductPage() {
   const { id } = useParams();
   const { products } = useGetProducts();
+  const {
+    state: { cart, wishlist },
+  } = useUserData();
   const { dispatch } = useUserData();
-  const { user, isLoggedIn } = useAuth();
+  const {
+    userLogin: { isLoggedIn },
+  } = useAuth();
   const { dispatch: toastDispatch } = useToast();
+  const { postData: addToCart, loading: addToCartStatus } = useAxios(
+    API.ADD_TO_CART
+  );
+  const { postData: addToWishlist, loading: addToWishlistStatus } = useAxios(
+    API.GET_WISHLIST
+  );
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const product = products.find((product) => product._id === id);
 
-  const handleAddToCart = async () => {
-    // if (isLoggedIn === false) {
-    //   navigate("/login");
-    //   return;
-    // }
-    // try {
-    //   setLoading(true);
-    //   const {
-    //     data: {
-    //       updatedCart: { products },
-    //     },
-    //     status,
-    //   } = await axios.post(
-    //     `https://api-jarvis-store.herokuapp.com/cart/${user.cartId}`,
-    //     {
-    //       productId: id,
-    //     }
-    //   );
-    //   if (status === 200) {
-    //     dispatch({ type: "SET_CART", payload: products });
-    //     toastDispatch({
-    //       type: "SUCCESS",
-    //       payload: { message: "Added to cart" },
-    //     });
-    //   }
-    // } catch (err) {
-    //   console.log(err);
-    // } finally {
-    //   setLoading(false);
-    // }
+  const handleWishlist = async (e) => {
+    e.stopPropagation();
+    if (isLoggedIn === false) {
+      return toastDispatch({
+        type: "INFO",
+        payload: { message: "Login Required" },
+      });
+    }
+
+    const data = await addToWishlist({ productId: id });
+
+    if (data?.success) {
+      dispatch({ type: "HANDLE_WISHLIST", payload: { product: product } });
+    }
   };
-  const match = products.find((product) => product._id === id);
-  const { image, brand, name, price, fastDelivery } = match;
+
+  const handleAddToCart = async (e) => {
+    if (isLoggedIn === false) {
+      return toastDispatch({
+        type: "INFO",
+        payload: { message: "Login Required" },
+      });
+    }
+
+    if (e.target.innerText === "Go To Cart") {
+      return navigate("/cart");
+    }
+
+    const data = await addToCart({ productId: id });
+
+    if (data?.success) {
+      dispatch({ type: "ADD_TO_CART", payload: { product } });
+
+      toastDispatch({
+        type: "SUCCESS",
+        payload: { message: "Added to cart" },
+      });
+    }
+  };
+
+  const generateButtonText = () => {
+    return cart.find((product) => product._id === id)
+      ? "Go To Cart"
+      : "Add to cart";
+  };
+
+  const generateWishlistIcon = () => {
+    return wishlist.find((product) => product._id === id) ? (
+      <span class="material-icons-outlined">favorite</span>
+    ) : (
+      <span className="material-icons-outlined">favorite_border</span>
+    );
+  };
+
   return (
-    <div className="product-page-container">
-      <img src={image} alt="product" className="product-image" />
-      <div className="product-details">
-        <h2 className="product-name">{name}</h2>
-        <p className="product-brand">By {brand}</p>
-        <p className="product-price">₹ {price}</p>
-        <p>Fast Delivery: {fastDelivery ? "Available" : "Not Available"}</p>
-        <button onClick={handleAddToCart} className="btn btn-md btn-primary">
-          {loading ? (
-            <i className="fas fa-circle-notch fa-pulse mr-2"></i>
-          ) : (
-            "Add to cart"
-          )}
-        </button>
+    <div className="product-page">
+      <h1 className="product-page-heading">{product.name}</h1>
+      <div className="product-page-container">
+        <div className="product-page-image-container">
+          <img
+            src={product.imageURL}
+            alt="product"
+            className="product-page-image"
+          />
+        </div>
+
+        <div className="product-page-details">
+          <h4 className="product-details-caption">Description</h4>
+          <p className="mb-3">{product.description}</p>
+
+          <div className="mb-5">
+            <h4 className="product-details-caption">Overview</h4>
+            <p className="text-gray-500 mb-1">
+              <span className="text-medium">Software</span> : {product.software}
+            </p>
+            <p className="text-gray-500 mb-1">
+              <span className="text-medium">Category</span> : {product.category}
+            </p>
+            <p className="text-gray-500">
+              <span className="text-medium">By</span> : {product.by}
+            </p>
+          </div>
+
+          <div className="flex">
+            <button
+              onClick={handleAddToCart}
+              className="product-page-addtocart"
+              disabled={addToCartStatus}
+            >
+              {addToCartStatus ? <Spinner /> : generateButtonText()}
+            </button>
+
+            <button onClick={handleWishlist} className="p-3 flex">
+              {addToWishlistStatus ? <Spinner /> : generateWishlistIcon()}
+            </button>
+          </div>
+        </div>
       </div>
+
+      <h2>Similar Products</h2>
+      <ProductsContainer
+        filteredProducts={products
+          .filter(
+            (item) =>
+              item.category === product.category && item._id !== product._id
+          )
+          .slice(0, 3)}
+      />
     </div>
   );
 }

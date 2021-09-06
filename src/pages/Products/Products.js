@@ -30,27 +30,7 @@ export default function Products() {
     return products;
   };
 
-  const filterProdcuts = (
-    products,
-    { showOnlyInStock, showOnlyFastDelivery }
-  ) => {
-    const newArr = showOnlyInStock
-      ? products.filter((prod) => prod.inStock)
-      : products;
-
-    const newArr2 = showOnlyFastDelivery
-      ? newArr.filter((prod) => prod.fastDelivery)
-      : newArr;
-
-    return newArr2;
-  };
-
   const sortedProducts = sortProducts(products, sortBy);
-
-  const filteredProducts = filterProdcuts(sortedProducts, {
-    showOnlyInStock,
-    showOnlyFastDelivery,
-  });
 
   return (
     <div className="flex">
@@ -97,7 +77,7 @@ export default function Products() {
           Show fast delivery only
         </label>
       </Sidebar>
-      <ProductsContainer filteredProducts={filteredProducts} />
+      <ProductsContainer filteredProducts={sortedProducts} />
       {mobileSortMenuOpen && (
         <MobileSortMenu setMobileSortMenuOpen={setMobileSortMenuOpen} />
       )}
