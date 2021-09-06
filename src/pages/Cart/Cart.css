@@ -1,0 +1,18 @@
+.cart-container {
+  max-width: 650px;
+  margin: auto;
+  padding: 1rem;
+}
+
+.cart-item-operations {
+  display: flex;
+  align-items: bottom;
+}
+
+.cart-item-operations > * + * {
+  margin-left: 0.5rem;
+}
+
+.cart-card {
+  background-color: white;
+}
