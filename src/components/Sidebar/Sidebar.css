@@ -1,5 +1,5 @@
 .sidebar {
-  padding: 1rem;
+  padding: 1.5rem;
   width: 250px;
   overflow-y: scroll;
   height: 85vh;
@@ -7,6 +7,7 @@
   position: -webkit-sticky;
   top: 5rem;
   flex-shrink: 0;
+  align-self: flex-start;
 }
 
 @media screen and (max-width: 768px) {
@@ -15,11 +16,26 @@
   }
 }
 
+.sidebar input {
+  margin: 0 0.25rem 0 0;
+}
+
 .sidebar .nav-header {
   text-transform: uppercase;
   font-size: 0.875rem;
   font-weight: 600;
-  margin: 1.25rem auto;
+  margin-bottom: 0.25rem;
+}
+
+.nav-label {
+  display: block;
+  padding-top: 0.275rem;
+  padding-bottom: 0.275rem;
+  font-size: 1rem;
+}
+
+.label-container {
+  margin-bottom: 1.5rem;
 }
 
 .sidebar::-webkit-scrollbar {

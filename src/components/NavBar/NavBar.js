@@ -1,3 +1,4 @@
+import "./NavBar.css";
 import { useAuth, useUserData } from "../../contexts";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
@@ -35,7 +36,7 @@ export default function NavBar() {
             payload: { products: cartData?.cart?.products },
           });
 
-        wishlistData?.cart?.products &&
+        wishlistData?.wishlist?.products &&
           dispatch({
             type: "SET_WISHLIST",
             payload: {
@@ -47,6 +48,7 @@ export default function NavBar() {
         dispatch({ type: "SET_WISHLIST", payload: { products: [] } });
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn]);
 
   return (

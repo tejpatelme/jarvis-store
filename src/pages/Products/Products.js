@@ -12,102 +12,69 @@ export default function Products() {
   const [mobileSortMenuOpen, setMobileSortMenuOpen] = useState(false);
   const [mobileFilterMenuOpen, setMobileFilterMenuOpen] = useState(false);
   const {
-    state: { showOnlyInStock, showOnlyFastDelivery, sortBy },
-    dispatch,
+    state: { sortBy, categoriesSelected, softwaresSelected },
   } = useProduct();
 
   const { products } = useGetProducts();
 
-  const sortProducts = (products, sortBy) => {
+  const sortProducts = (data, sortBy) => {
     if (sortBy === "HIGH_TO_LOW") {
-      return products.sort((a, b) => b.price - a.price);
+      return data.slice().sort((a, b) => b.price - a.price);
     }
 
     if (sortBy === "LOW_TO_HIGH") {
-      return products.sort((a, b) => a.price - b.price);
+      return data.slice().sort((a, b) => a.price - b.price);
     }
 
-    return products;
+    return data;
   };
 
-  const filterProdcuts = (
-    products,
-    { showOnlyInStock, showOnlyFastDelivery }
-  ) => {
-    const newArr = showOnlyInStock
-      ? products.filter((prod) => prod.inStock)
-      : products;
+  const filterByCategories = (sortedProducts) => {
+    if (categoriesSelected.length === 0) {
+      return sortedProducts;
+    }
 
-    const newArr2 = showOnlyFastDelivery
-      ? newArr.filter((prod) => prod.fastDelivery)
-      : newArr;
+    return sortedProducts.filter((product) =>
+      categoriesSelected.includes(product.category)
+    );
+  };
 
-    return newArr2;
+  const filterBySoftwares = (filteredByCategory) => {
+    if (softwaresSelected.length === 0) {
+      return filteredByCategory;
+    }
+
+    return filteredByCategory.filter((product) =>
+      softwaresSelected.includes(product.software)
+    );
   };
 
   const sortedProducts = sortProducts(products, sortBy);
-
-  const filteredProducts = filterProdcuts(sortedProducts, {
-    showOnlyInStock,
-    showOnlyFastDelivery,
-  });
+  const filteredByCategory = filterByCategories(sortedProducts);
+  const filteredBySoftware = filterBySoftwares(filteredByCategory);
 
   return (
     <div className="flex">
-      <Sidebar>
-        <div className="nav-header">Sort</div>
-        <label>
-          <input
-            type="radio"
-            name="sort"
-            onChange={() =>
-              dispatch({ type: "SORT_BY", payload: "HIGH_TO_LOW" })
-            }
-          />{" "}
-          High To Low
-        </label>
-        <br />
-        <label>
-          <input
-            type="radio"
-            name="sort"
-            onChange={() =>
-              dispatch({ type: "SORT_BY", payload: "LOW_TO_HIGH" })
-            }
-          />{" "}
-          Low To High
-        </label>
-
-        <div className="nav-header">Filter</div>
-        <label>
-          <input
-            checked={showOnlyInStock}
-            type="checkbox"
-            onChange={() => dispatch({ type: "SHOW_ONLY_IN_STOCK" })}
+      {products ? (
+        <>
+          <Sidebar />
+          <ProductsContainer filteredProducts={filteredBySoftware} />
+          {mobileSortMenuOpen && (
+            <MobileSortMenu setMobileSortMenuOpen={setMobileSortMenuOpen} />
+          )}
+          {mobileFilterMenuOpen && (
+            <MobileFilterMenu
+              setMobileFilterMenuOpen={setMobileFilterMenuOpen}
+            />
+          )}
+          <MobileSortAndFilter
+            setMobileSortMenuOpen={setMobileSortMenuOpen}
+            setMobileFilterMenuOpen={setMobileFilterMenuOpen}
           />
-          Exclude out of stock
-        </label>
-        <br />
-        <label>
-          <input
-            checked={showOnlyFastDelivery}
-            type="checkbox"
-            onChange={() => dispatch({ type: "SHOW_ONLY_FAST_DELIVERY" })}
-          />
-          Show fast delivery only
-        </label>
-      </Sidebar>
-      <ProductsContainer filteredProducts={filteredProducts} />
-      {mobileSortMenuOpen && (
-        <MobileSortMenu setMobileSortMenuOpen={setMobileSortMenuOpen} />
+        </>
+      ) : (
+        <p>Loading Products...</p>
       )}
-      {mobileFilterMenuOpen && (
-        <MobileFilterMenu setMobileFilterMenuOpen={setMobileFilterMenuOpen} />
-      )}
-      <MobileSortAndFilter
-        setMobileSortMenuOpen={setMobileSortMenuOpen}
-        setMobileFilterMenuOpen={setMobileFilterMenuOpen}
-      />
     </div>
   );
 }
