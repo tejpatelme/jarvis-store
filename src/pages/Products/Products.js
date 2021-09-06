@@ -55,18 +55,26 @@ export default function Products() {
 
   return (
     <div className="flex">
-      <Sidebar />
-      <ProductsContainer filteredProducts={filteredBySoftware} />
-      {mobileSortMenuOpen && (
-        <MobileSortMenu setMobileSortMenuOpen={setMobileSortMenuOpen} />
+      {products ? (
+        <>
+          <Sidebar />
+          <ProductsContainer filteredProducts={filteredBySoftware} />
+          {mobileSortMenuOpen && (
+            <MobileSortMenu setMobileSortMenuOpen={setMobileSortMenuOpen} />
+          )}
+          {mobileFilterMenuOpen && (
+            <MobileFilterMenu
+              setMobileFilterMenuOpen={setMobileFilterMenuOpen}
+            />
+          )}
+          <MobileSortAndFilter
+            setMobileSortMenuOpen={setMobileSortMenuOpen}
+            setMobileFilterMenuOpen={setMobileFilterMenuOpen}
+          />
+        </>
+      ) : (
+        <p>Loading Products...</p>
       )}
-      {mobileFilterMenuOpen && (
-        <MobileFilterMenu setMobileFilterMenuOpen={setMobileFilterMenuOpen} />
-      )}
-      <MobileSortAndFilter
-        setMobileSortMenuOpen={setMobileSortMenuOpen}
-        setMobileFilterMenuOpen={setMobileFilterMenuOpen}
-      />
     </div>
   );
 }

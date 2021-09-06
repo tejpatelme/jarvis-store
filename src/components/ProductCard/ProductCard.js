@@ -6,24 +6,14 @@ import "./ProductCard.css";
 
 export default function ProductCard({ details }) {
   const {
-    state: { cart, wishlist },
+    state: { wishlist },
     dispatch,
   } = useUserData();
   const {
     userLogin: { isLoggedIn },
   } = useAuth();
-  const {
-    _id,
-    category,
-    name,
-    price,
-    imageURL,
-    fastDelivery,
-    inStock,
-    software,
-  } = details;
+  const { _id, name, price, imageURL, software } = details;
   const { dispatch: toastDispatch } = useToast();
-  const { postData: addToCart, loading } = useAxios(API.ADD_TO_CART);
   const { postData: addToWishlist } = useAxios(API.GET_WISHLIST);
   const navigate = useNavigate();
 
@@ -51,9 +41,9 @@ export default function ProductCard({ details }) {
     <div onClick={navigateToDescription} className="product-card">
       <button className="card-button" onClick={handleWishlist}>
         {wishlist.find((prod) => prod._id === _id) ? (
-          <span class="material-icons-outlined">favorite</span>
+          <span className="material-icons-outlined">favorite</span>
         ) : (
-          <span class="material-icons-outlined">favorite_border</span>
+          <span className="material-icons-outlined">favorite_border</span>
         )}
       </button>
       <div className="product-image-container">

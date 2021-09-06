@@ -41,7 +41,7 @@
 
 .product-page-details {
   max-width: 500px;
-  padding: 1rem;
+  padding-top: 1rem;
 }
 
 @media (min-width: 768px) {
