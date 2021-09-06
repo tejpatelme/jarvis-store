@@ -1,7 +1,0 @@
-.nav-links ul > * + * {
-  margin-left: 1.25rem;
-}
-
-.top-navigation {
-  z-index: 10;
-}
