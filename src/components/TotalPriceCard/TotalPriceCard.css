@@ -1,0 +1,43 @@
+.total-price-container {
+  flex-grow: 1;
+  align-self: flex-start;
+  border-radius: 0.25rem;
+  border: 1px solid lightgray;
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .total-price-container {
+    max-width: 320px;
+  }
+}
+
+.total-price-heading {
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  line-height: 2rem;
+  font-weight: 600;
+  --tw-text-opacity: 1;
+  color: rgba(55, 65, 81, var(--tw-text-opacity));
+}
+
+.total-price-amount {
+  margin-bottom: 1rem;
+  display: block;
+  font-size: 1.875rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+}
+
+.total-price-checkout-button {
+  border: none;
+  width: 100%;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  background-color: rgba(124, 58, 237, 0.7);
+  padding: 1rem;
+  text-align: center;
+  font-weight: 600;
+  --tw-text-opacity: 1;
+  color: rgba(255, 255, 255, var(--tw-text-opacity));
+}
