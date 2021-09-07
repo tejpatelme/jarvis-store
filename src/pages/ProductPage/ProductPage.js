@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useGetProducts, useAuth, useToast, useUserData } from "../../contexts";
 import useAxios from "../../hooks/useAxios";
 import API from "../../services/api/api-urls";
-import { ProductCard, Spinner } from "../../components";
+import { BackButton, ProductCard, Spinner } from "../../components";
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -83,7 +83,11 @@ export default function ProductPage() {
     <>
       {product ? (
         <div className="product-page">
-          <h1 className="product-page-heading">{product.name}</h1>
+          <div className="flex items-center">
+            <BackButton />
+            <h1 className="product-page-heading">{product.name}</h1>
+          </div>
+
           <div className="product-page-container">
             <div className="product-page-image-container">
               <img

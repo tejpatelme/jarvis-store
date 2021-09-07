@@ -10,3 +10,4 @@ export { default as TotalPriceCard } from "./TotalPriceCard/TotalPriceCard";
 export { default as WishlistCard } from "./WishlistCard/WishlistCard";
 export { default as Heading } from "./Heading/Heading";
 export { default as EmptyMessage } from "./EmptyMessage/EmptyMessage";
+export { default as BackButton } from "./BackButton/BackButton";
