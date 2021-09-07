@@ -29,6 +29,18 @@ export default function Login() {
     }
   };
 
+  const handleLoginAsGuest = async () => {
+    setLoginStatus("loading");
+    const success = await login("gilgamesh@gmail.com", "Gilgamesh20$");
+
+    if (success) {
+      setLoginStatus("fulfilled");
+      navigate(state?.from ? state.from : "/");
+    } else {
+      setLoginStatus("rejected");
+    }
+  };
+
   return (
     <div className="form-wrapper">
       <div className="form-container">
@@ -58,6 +70,14 @@ export default function Login() {
             {loginStatus === "loading" ? <Spinner /> : "Login"}
           </button>
         </form>
+        <button
+          disabled={loginStatus === "loading"}
+          type="submit"
+          onClick={handleLoginAsGuest}
+          className="btn btn-lg btn-primary"
+        >
+          {loginStatus === "loading" ? <Spinner /> : "Login as guest"}
+        </button>
         <p>
           Don't have an account?{" "}
           <Link to="/signup">
