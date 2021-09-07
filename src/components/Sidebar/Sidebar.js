@@ -1,7 +1,7 @@
 import { useGetProducts, useProduct } from "../../contexts";
 import "./Sidebar.css";
 
-export default function Sidebar() {
+export default function Sidebar({ showSortAndFilter, setShowSortAndFilter }) {
   const { products } = useGetProducts();
   let categories = products.map((product) => product.category);
   categories = categories.filter(
@@ -17,10 +17,12 @@ export default function Sidebar() {
     dispatch,
   } = useProduct();
 
-  // <button className="btn">Clear</button>;
-
   return (
-    <div className="sidebar">
+    <div
+      className={`sidebar ${
+        showSortAndFilter ? "show-sidebar" : "hide-sidebar"
+      }`}
+    >
       <div className="nav-header">Sort</div>
       <div className="label-container">
         <label className="nav-label">
@@ -100,6 +102,13 @@ export default function Sidebar() {
         className="btn p-2"
       >
         Reset Filters
+      </button>
+
+      <button
+        onClick={() => setShowSortAndFilter(false)}
+        className="btn close-button"
+      >
+        <span className="material-icons-round">close</span>
       </button>
     </div>
   );
