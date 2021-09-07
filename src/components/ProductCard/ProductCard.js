@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useAxios from "../../hooks/useAxios";
 import API from "../../services/api/api-urls";
 import "./ProductCard.css";
+import { Spinner } from "..";
 
 export default function ProductCard({ details }) {
   const {
@@ -14,7 +15,9 @@ export default function ProductCard({ details }) {
   } = useAuth();
   const { _id, name, price, imageURL, software } = details;
   const { dispatch: toastDispatch } = useToast();
-  const { postData: addToWishlist } = useAxios(API.GET_WISHLIST);
+  const { postData: addToWishlist, loading: addToWishlistStatus } = useAxios(
+    API.GET_WISHLIST
+  );
   const navigate = useNavigate();
 
   const handleWishlist = async (e) => {
@@ -37,14 +40,18 @@ export default function ProductCard({ details }) {
     navigate(`/products/${_id}`);
   };
 
+  const generateWishlistIcon = () => {
+    return wishlist.find((product) => product._id === _id) ? (
+      <span className="material-icons-outlined">favorite</span>
+    ) : (
+      <span className="material-icons-outlined">favorite_border</span>
+    );
+  };
+
   return (
     <div onClick={navigateToDescription} className="product-card">
       <button className="card-button" onClick={handleWishlist}>
-        {wishlist.find((prod) => prod._id === _id) ? (
-          <span className="material-icons-outlined">favorite</span>
-        ) : (
-          <span className="material-icons-outlined">favorite_border</span>
-        )}
+        {addToWishlistStatus ? <Spinner /> : generateWishlistIcon()}
       </button>
       <div className="product-image-container">
         <img src={imageURL} alt="product" className="product-image" />
