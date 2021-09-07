@@ -68,6 +68,10 @@
   display: block;
 }
 
+.cart-product-price-mobile > p {
+  color: var(--success-green);
+}
+
 @media (min-width: 640px) {
   .cart-product-price-mobile {
     display: none;
@@ -76,6 +80,11 @@
 
 .cart-product-price-desktop {
   display: none;
+  color: pink;
+}
+
+.cart-product-price-desktop > p {
+  color: var(--success-green);
 }
 
 @media (min-width: 640px) {
