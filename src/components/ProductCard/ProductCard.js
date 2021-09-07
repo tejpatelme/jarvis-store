@@ -42,9 +42,9 @@ export default function ProductCard({ details }) {
 
   const generateWishlistIcon = () => {
     return wishlist.find((product) => product._id === _id) ? (
-      <span className="material-icons-outlined">favorite</span>
+      <span className="material-icons-outlined text-lg">favorite</span>
     ) : (
-      <span className="material-icons-outlined">favorite_border</span>
+      <span className="material-icons-outlined text-lg">favorite_border</span>
     );
   };
 

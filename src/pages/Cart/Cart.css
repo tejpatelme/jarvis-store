@@ -1,11 +1,15 @@
 .cart-page {
-  margin: 1.25rem auto auto auto;
-  max-width: 1376px;
+  margin: auto;
+  max-width: 1244px;
+}
+
+.cart-container {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   padding-left: 1rem;
   padding-right: 1rem;
+  margin-top: 1rem;
 }
 
 .cart-products-container {

@@ -1,6 +1,6 @@
 import "./Wishlist.css";
 import { useUserData } from "../../contexts";
-import { WishlistCard } from "../../components";
+import { EmptyMessage, Heading, WishlistCard } from "../../components";
 
 export default function Wishlist() {
   const {
@@ -8,10 +8,19 @@ export default function Wishlist() {
   } = useUserData();
 
   return (
-    <div className="wishlist-container">
-      {wishlist.map((product) => (
-        <WishlistCard product={product} />
-      ))}
+    <div className="wishlist-page">
+      {wishlist.length > 0 ? (
+        <>
+          <Heading title="Wishlist" noOfProducts={wishlist.length} />
+          <div className="wishlist-container">
+            {wishlist.map((product) => (
+              <WishlistCard key={product._id} product={product} />
+            ))}
+          </div>
+        </>
+      ) : (
+        <EmptyMessage />
+      )}
     </div>
   );
 }

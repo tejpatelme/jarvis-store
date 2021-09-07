@@ -2,9 +2,9 @@
   /* display: flex;
   flex-wrap: wrap;*/
   width: 100%;
-  padding: 1rem;
+  padding: 0.875rem;
   display: grid;
-  grid-gap: 2.5rem 1.25rem;
+  grid-gap: 2.5rem 1.5rem;
   grid-template-columns: repeat(1fr);
 }
 
@@ -16,13 +16,13 @@
 
 @media screen and (min-width: 768px) {
   .prod-container {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media screen and (min-width: 1024px) {
   .prod-container {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
