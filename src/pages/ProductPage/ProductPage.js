@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useGetProducts, useAuth, useToast, useUserData } from "../../contexts";
 import useAxios from "../../hooks/useAxios";
 import API from "../../services/api/api-urls";
-import { ProductsContainer, Spinner } from "../../components";
+import { ProductCard, Spinner } from "../../components";
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -129,14 +129,25 @@ export default function ProductPage() {
           </div>
 
           <h2>Similar Products</h2>
-          <ProductsContainer
+          <div className="wishlist-container">
+            {products
+              .filter(
+                (item) =>
+                  item.category === product.category && item._id !== product._id
+              )
+              .slice(0, 4)
+              .map((product) => (
+                <ProductCard key={product._id} details={product} />
+              ))}
+          </div>
+          {/* <ProductsContainer
             filteredProducts={products
               .filter(
                 (item) =>
                   item.category === product.category && item._id !== product._id
               )
               .slice(0, 3)}
-          />
+          /> */}
         </div>
       ) : (
         <p>Loading....</p>
