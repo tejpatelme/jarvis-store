@@ -1,5 +1,6 @@
 import "./Login.css";
 import { useEffect, useState } from "react";
+import { Spinner } from "../../components";
 import { useAuth } from "../../contexts";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -7,8 +8,7 @@ export default function Login() {
   const { login, isLoggedIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loginStatus, setLoginStatus] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [loginStatus, setLoginStatus] = useState("idle");
 
   const { state } = useLocation();
   const navigate = useNavigate();
@@ -18,15 +18,14 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoginStatus("loading");
     const success = await login(email, password);
 
     if (success) {
-      setLoginStatus("success");
-      setErrorMessage("");
+      setLoginStatus("fulfilled");
       navigate(state?.from ? state.from : "/");
     } else {
-      setLoginStatus("failed");
-      setErrorMessage(errorMessage);
+      setLoginStatus("rejected");
     }
   };
 
@@ -51,16 +50,12 @@ export default function Login() {
             placeholder="•••••••"
             onChange={(e) => setPassword(e.target.value)}
           />
-          {loginStatus === "failed" && (
-            <div className="alert error">
-              <svg width="20px" height="20px" viewBox="0 0 24 24">
-                <path d="M13 13h-2V7h2m0 10h-2v-2h2M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2z"></path>
-              </svg>
-              {errorMessage}
-            </div>
-          )}
-          <button type="submit" className="btn btn-lg btn-primary">
-            Login
+          <button
+            disabled={loginStatus === "loading"}
+            type="submit"
+            className="btn btn-lg btn-primary"
+          >
+            {loginStatus === "loading" ? <Spinner /> : "Login"}
           </button>
         </form>
         <p>

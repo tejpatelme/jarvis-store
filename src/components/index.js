@@ -10,3 +10,4 @@ export { default as MobileSortMenu } from "./MobileSortAndFilter/MobileSortMenu"
 export { default as MobileFilterMenu } from "./MobileSortAndFilter/MobileFilterMenu";
 export { default as CartCard } from "./CartCard/CartCard";
 export { default as TotalPriceCard } from "./TotalPriceCard/TotalPriceCard";
+export { default as WishlistCard } from "./WishlistCard/WishlistCard";
