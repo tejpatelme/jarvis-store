@@ -1,16 +1,10 @@
+import "./Products.css";
 import { useState } from "react";
-import {
-  ProductsContainer,
-  Sidebar,
-  MobileSortAndFilter,
-  MobileSortMenu,
-  MobileFilterMenu,
-} from "../../components";
+import { ProductsContainer, Sidebar } from "../../components";
 import { useProduct, useGetProducts } from "../../contexts";
 
 export default function Products() {
-  const [mobileSortMenuOpen, setMobileSortMenuOpen] = useState(false);
-  const [mobileFilterMenuOpen, setMobileFilterMenuOpen] = useState(false);
+  const [showSortAndFilter, setShowSortAndFilter] = useState(false);
   const {
     state: { sortBy, categoriesSelected, softwaresSelected },
   } = useProduct();
@@ -55,22 +49,19 @@ export default function Products() {
 
   return (
     <div className="flex">
+      <button
+        className="btn filter-button shadow-md"
+        onClick={() => setShowSortAndFilter(true)}
+      >
+        <span className="material-icons-round">filter_alt</span>
+      </button>
       {products ? (
         <>
-          <Sidebar />
-          <ProductsContainer filteredProducts={filteredBySoftware} />
-          {mobileSortMenuOpen && (
-            <MobileSortMenu setMobileSortMenuOpen={setMobileSortMenuOpen} />
-          )}
-          {mobileFilterMenuOpen && (
-            <MobileFilterMenu
-              setMobileFilterMenuOpen={setMobileFilterMenuOpen}
-            />
-          )}
-          <MobileSortAndFilter
-            setMobileSortMenuOpen={setMobileSortMenuOpen}
-            setMobileFilterMenuOpen={setMobileFilterMenuOpen}
+          <Sidebar
+            setShowSortAndFilter={setShowSortAndFilter}
+            showSortAndFilter={showSortAndFilter}
           />
+          <ProductsContainer filteredProducts={filteredBySoftware} />
         </>
       ) : (
         <p>Loading Products...</p>

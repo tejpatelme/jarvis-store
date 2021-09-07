@@ -1,18 +1,35 @@
 .sidebar {
+  position: relative;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  min-height: fit-content;
+  background: white;
   padding: 1.5rem;
-  width: 250px;
-  overflow-y: scroll;
-  height: 85vh;
-  position: sticky;
-  position: -webkit-sticky;
-  top: 5rem;
-  flex-shrink: 0;
-  align-self: flex-start;
+  transition-duration: 0.3s;
 }
 
-@media screen and (max-width: 768px) {
+.show-hidebar {
+  transform: translateY(0);
+}
+
+.hide-sidebar {
+  transform: translateY(100%);
+}
+
+@media screen and (min-width: 768px) {
   .sidebar {
-    display: none;
+    width: 250px;
+    overflow-y: scroll;
+    min-height: calc(100vh - 4rem);
+    position: sticky;
+    position: -webkit-sticky;
+    top: 3rem;
+    flex-shrink: 0;
+    align-self: flex-start;
+    transform: translateY(0);
   }
 }
 
@@ -45,4 +62,19 @@
 .sidebar::-webkit-scrollbar-thumb {
   background: lightgray;
   border-radius: 1.2rem;
+}
+
+.close-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+}
+
+@media screen and (min-width: 768px) {
+  .close-button {
+    display: none;
+  }
 }
