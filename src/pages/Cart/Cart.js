@@ -1,6 +1,11 @@
 import "./Cart.css";
 import { useUserData } from "../../contexts";
-import { CartCard, TotalPriceCard } from "../../components";
+import {
+  CartCard,
+  TotalPriceCard,
+  Heading,
+  EmptyMessage,
+} from "../../components";
 
 export default function Cart() {
   const {
@@ -9,13 +14,21 @@ export default function Cart() {
 
   return (
     <div className="cart-page">
-      <div className="cart-products-container">
-        {cart.map((product) => {
-          return <CartCard key={product._id} product={product} />;
-        })}
-      </div>
-      <TotalPriceCard />
-      {/* <h3 className="mb-3">Cart {cart.length} Items</h3> */}
+      {cart.length > 0 ? (
+        <>
+          <Heading title="Cart" noOfProducts={cart.length} />
+          <div className="cart-container">
+            <div className="cart-products-container">
+              {cart.map((product) => {
+                return <CartCard key={product._id} product={product} />;
+              })}
+            </div>
+            <TotalPriceCard />
+          </div>
+        </>
+      ) : (
+        <EmptyMessage type="cart" />
+      )}
     </div>
   );
 }
