@@ -8,3 +8,5 @@ export { default as Spinner } from "./Spinner/Spinner";
 export { default as MobileSortAndFilter } from "./MobileSortAndFilter/MobileSortAndFilter";
 export { default as MobileSortMenu } from "./MobileSortAndFilter/MobileSortMenu";
 export { default as MobileFilterMenu } from "./MobileSortAndFilter/MobileFilterMenu";
+export { default as CartCard } from "./CartCard/CartCard";
+export { default as TotalPriceCard } from "./TotalPriceCard/TotalPriceCard";
