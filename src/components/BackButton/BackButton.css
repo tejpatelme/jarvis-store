@@ -1,0 +1,18 @@
+.back-button {
+  border-radius: 50%;
+  background: white;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.back-button:hover {
+  background: lightgray;
+}
+
+.back-button span {
+  font-size: 2rem;
+}
