@@ -1,7 +1,11 @@
-.wishlist-container {
-  padding: 1rem;
+.wishlist-page {
   max-width: 1244px;
   margin: auto;
+}
+
+.wishlist-container {
+  padding: 1rem;
+
   display: grid;
   grid-gap: 1.5rem;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));

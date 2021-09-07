@@ -121,7 +121,11 @@ export default function ProductPage() {
                   {addToCartStatus ? <Spinner /> : generateButtonText()}
                 </button>
 
-                <button onClick={handleWishlist} className="p-3 flex">
+                <button
+                  onClick={handleWishlist}
+                  style={{ border: "1px solid lightgray" }}
+                  className=" btn p-3 flex"
+                >
                   {addToWishlistStatus ? <Spinner /> : generateWishlistIcon()}
                 </button>
               </div>
@@ -140,14 +144,6 @@ export default function ProductPage() {
                 <ProductCard key={product._id} details={product} />
               ))}
           </div>
-          {/* <ProductsContainer
-            filteredProducts={products
-              .filter(
-                (item) =>
-                  item.category === product.category && item._id !== product._id
-              )
-              .slice(0, 3)}
-          /> */}
         </div>
       ) : (
         <p>Loading....</p>
