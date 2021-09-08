@@ -35,6 +35,7 @@ export default function WishlistCard({ product }) {
       <button
         onClick={(e) => handleRemoveFromWishlist(e, product._id)}
         className="card-button"
+        disabled={removeFromWishlistStatus}
       >
         {removeFromWishlistStatus ? (
           <Spinner />
