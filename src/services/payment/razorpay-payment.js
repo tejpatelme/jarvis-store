@@ -1,5 +1,6 @@
 import axios from "axios";
 import logo from "../../assests/jarvis.svg";
+import API from "../api/api-urls";
 
 const loadScript = async (src) => {
   return new Promise((resolve) => {
@@ -21,7 +22,7 @@ export const makePayment = async (orderDetails) => {
 
     const {
       data: { order },
-    } = await axios.post("http://localhost:3000/carts/checkout", {
+    } = await axios.post(API.CHECKOUT, {
       orderDetails,
     });
 
