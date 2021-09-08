@@ -11,3 +11,4 @@ export { default as WishlistCard } from "./WishlistCard/WishlistCard";
 export { default as Heading } from "./Heading/Heading";
 export { default as EmptyMessage } from "./EmptyMessage/EmptyMessage";
 export { default as BackButton } from "./BackButton/BackButton";
+export { default as CategoryCard } from "./CategoryCard/CategoryCard";
