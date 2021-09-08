@@ -1,6 +1,6 @@
 import "./Products.css";
 import { useState } from "react";
-import { ProductsContainer, Sidebar } from "../../components";
+import { ProductsContainer, Sidebar, Spinner } from "../../components";
 import { useProduct, useGetProducts } from "../../contexts";
 
 export default function Products() {
@@ -55,7 +55,7 @@ export default function Products() {
       >
         <span className="material-icons-round">filter_alt</span>
       </button>
-      {products ? (
+      {products.length > 0 ? (
         <>
           <Sidebar
             setShowSortAndFilter={setShowSortAndFilter}
@@ -64,7 +64,12 @@ export default function Products() {
           <ProductsContainer filteredProducts={filteredBySoftware} />
         </>
       ) : (
-        <p>Loading Products...</p>
+        <div
+          style={{ height: "60vh", width: "100%" }}
+          className="flex items-center justify-center"
+        >
+          <Spinner size={60} />
+        </div>
       )}
     </div>
   );

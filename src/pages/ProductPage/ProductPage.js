@@ -127,6 +127,7 @@ export default function ProductPage() {
 
                 <button
                   onClick={handleWishlist}
+                  disabled={addToWishlistStatus}
                   style={{ border: "1px solid lightgray" }}
                   className=" btn p-3 flex"
                 >
@@ -150,7 +151,12 @@ export default function ProductPage() {
           </div>
         </div>
       ) : (
-        <p>Loading....</p>
+        <div
+          style={{ height: "60vh", width: "100%" }}
+          className="flex items-center justify-center"
+        >
+          <Spinner size={60} />
+        </div>
       )}
     </>
   );

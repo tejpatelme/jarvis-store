@@ -1,10 +1,10 @@
-export default function Spinner() {
+export default function Spinner({ size }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       style={{ margin: "auto", background: "none" }}
-      width="24"
-      height="24"
+      width={size ? size : "24"}
+      height={size ? size : "24"}
       display="block"
       preserveAspectRatio="xMidYMid"
       viewBox="0 0 100 100"
