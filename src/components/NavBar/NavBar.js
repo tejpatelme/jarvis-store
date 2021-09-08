@@ -1,7 +1,7 @@
 import "./NavBar.css";
 import logo from "../../assests/logo.svg";
 import { useAuth, useUserData } from "../../contexts";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import useAxios from "../../hooks/useAxios";
 import API from "../../services/api/api-urls";
@@ -17,12 +17,15 @@ export default function NavBar() {
     logout,
   } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { getData: getUsersCart } = useAxios(API.GET_CART);
   const { getData: getUsersWishlist } = useAxios(API.GET_WISHLIST);
 
   const handleClick = (e) => {
-    return isLoggedIn ? logout() : navigate("/login");
+    return isLoggedIn
+      ? logout()
+      : navigate("/login", { state: { from: location.pathname } });
   };
 
   useEffect(() => {
