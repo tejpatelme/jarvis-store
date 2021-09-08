@@ -50,7 +50,11 @@ export default function ProductCard({ details }) {
 
   return (
     <div onClick={navigateToDescription} className="product-card">
-      <button className="card-button" onClick={handleWishlist}>
+      <button
+        disabled={addToWishlistStatus}
+        className="card-button"
+        onClick={handleWishlist}
+      >
         {addToWishlistStatus ? <Spinner /> : generateWishlistIcon()}
       </button>
       <div className="product-image-container">

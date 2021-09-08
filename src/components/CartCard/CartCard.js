@@ -87,7 +87,7 @@ export default function CartCard({ product }) {
               </button>
             </div>
             <button
-              disabled={product.qty === 1}
+              disabled={product.qty === 1 || decreaseQuantityStatus}
               onClick={() => handleDecreaseQuantity(product._id)}
               className="btn cart-operation-button"
             >
@@ -107,6 +107,7 @@ export default function CartCard({ product }) {
             </button>{" "}
             <span className="cart-product-quantity">{product.qty}</span>{" "}
             <button
+              disabled={increaseQuantityStatus}
               onClick={() => handleIncreaseQuantity(product._id)}
               className="btn cart-operation-button"
             >

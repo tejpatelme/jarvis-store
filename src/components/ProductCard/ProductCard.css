@@ -49,3 +49,7 @@
 .card-button {
   z-index: 1;
 }
+
+.card-button:disabled {
+  cursor: not-allowed;
+}
