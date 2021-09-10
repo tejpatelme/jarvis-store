@@ -2,17 +2,24 @@ import "./TotalPriceCard.css";
 import { useUserData } from "../../contexts/userdata-context";
 import { useEffect, useState } from "react";
 import { makePayment } from "../../services/payment/razorpay-payment";
+import { Spinner } from "../";
 
 export default function TotalPriceCard() {
   const [cartTotal, setCartTotal] = useState(0);
+  const [checkoutStatus, setCheckoutStatus] = useState("idle");
 
   const {
     state: { cart },
   } = useUserData();
 
   const handleCheckout = async () => {
-    const response = await makePayment({ amount: cartTotal });
-    console.log(response);
+    setCheckoutStatus("loading");
+    try {
+      await makePayment({ amount: cartTotal });
+      setCheckoutStatus("fulfilled");
+    } catch {
+      setCheckoutStatus("rejected");
+    }
   };
 
   useEffect(() => {
@@ -33,10 +40,11 @@ export default function TotalPriceCard() {
           <h3 className="total-price-heading">Cart Total</h3>
           <span className="total-price-amount">₹ {cartTotal}</span>
           <button
+            disabled={checkoutStatus === "loading"}
             onClick={handleCheckout}
             className="total-price-checkout-button"
           >
-            Proceed To Checkout
+            {checkoutStatus === "Loading" ? <Spinner /> : "Proceed To Checkout"}
           </button>
         </div>
       )}
