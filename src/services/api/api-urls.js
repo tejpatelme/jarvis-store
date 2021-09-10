@@ -1,6 +1,6 @@
 // const BASE_URL = "http://localhost:3000";
-const BASE_URL = "https://api-jarvis-store.herokuapp.com";
-// const BASE_URL = "https://jarvis-store-backend.curiousguy.repl.co";
+// const BASE_URL = "https://api-jarvis-store.herokuapp.com";
+const BASE_URL = "https://jarvis-store-backend.curiousguy.repl.co";
 
 const API = {
   BASE_URL: `${BASE_URL}`,
