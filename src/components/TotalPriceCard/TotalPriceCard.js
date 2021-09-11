@@ -44,7 +44,7 @@ export default function TotalPriceCard() {
             onClick={handleCheckout}
             className="total-price-checkout-button"
           >
-            {checkoutStatus === "Loading" ? <Spinner /> : "Proceed To Checkout"}
+            {checkoutStatus === "loading" ? <Spinner /> : "Proceed To Checkout"}
           </button>
         </div>
       )}
