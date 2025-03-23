@@ -27,7 +27,7 @@ export const makePayment = async (orderDetails) => {
     });
 
     const options = {
-      key: "rzp_test_TCLS3zM72WHGDt",
+      key: process.env.REACT_APP_RAZORPAY_KEY,
       amount: order.amount.toString(),
       currency: order.currency,
       name: "Jarvis Corp.",
